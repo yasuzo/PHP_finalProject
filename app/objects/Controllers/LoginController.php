@@ -44,9 +44,9 @@ class LoginController implements Controller{
                     throw new RuntimeException('Greska - Poslan je array!');
                 }
                 if($this->userRepository->credentialsOK($username, $password)){
-                    $this->session->setSessionProperty('user', $username);
-                    header('Location: '.($this->session->getSessionProperty('lastPage') ?? 'index.php'));
-                    die();
+                    $user = $this->userRepository->findByUsername($username);
+                    $this->session->setSessionProperty('user', $user->id());
+                    return new RedirectResponse($this->session->getSessionProperty('lastPage') ?? 'index.php');
                 }else{
                     $messages[] = "Username ili password nije ispravan!";
                 }

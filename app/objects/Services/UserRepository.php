@@ -26,6 +26,21 @@ SQL;
         return $user;
     }
 
+    public function findById($id): ?User{
+        $query = <<<SQL
+        select id, firstName, lastName, username, pass, permission
+        from users
+        where id=:id;
+SQL;
+        $query = $this->baza->prepare($query);
+        $query->execute([':id' => $id]);
+        if(($user = $query->fetch()) === false){
+            return null;
+        }
+        $user = new User($user['firstName'], $user['lastName'], $user['username'], $user['pass'], $user['permission'], $user['id']);
+        return $user;
+    }
+
     public function persist(User $user): void{
         $query = <<<SQL
         insert into users

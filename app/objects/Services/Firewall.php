@@ -17,7 +17,7 @@ class Firewall{
         if($user == null){
             return false;
         }
-        $user = $this->userRepository->findByUsername($user);
+        $user = $this->userRepository->findById($user);
         return $user->permission() === $level;
     }
 

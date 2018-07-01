@@ -10,7 +10,7 @@ require_once ROOT.'/app/baza.php';
 require_once ROOT."/app/libraries/helper_functions.php";
 require_once ROOT."/app/libraries/validation_helpers.php";
 
-use Services\{Session, Templating, UserRepository};
+use Services\{Session, Templating, UserRepository, NewsRepository, Firewall};
 
 use Controllers\{
     LoginController,
@@ -28,8 +28,10 @@ use Http\Responses\HTMLResponse;
 use Http\Request;
 
 $userRepository = new UserRepository($db);
+$newsRepository = new NewsRepository($db);
 $templatingEngine = new Templating(ROOT.'/app/views/');
 $session = new Session();
+$firewall = new Firewall($session, $userRepository);
 $request = new Request(
     $_SERVER['REQUEST_METHOD'], 
     $_SERVER['HTTP_REFERER'] ?? null, 
@@ -61,7 +63,7 @@ switch($_GET['controller'] ?? 'index'){
         $controller = new SettingsController($templatingEngine, $session, $userRepository);
         break;
     case 'index':
-        $controller = new IndexController($templatingEngine, $session);
+        $controller = new IndexController($templatingEngine, $session, $newsRepository, $firewall);
         break;
     default:
         http_response_code(404);

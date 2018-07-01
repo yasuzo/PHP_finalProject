@@ -9,6 +9,10 @@ class Session{
         }
     }
 
+    public function getLoggedUserId(): ?int{
+        return $_SESSION['user'] ?? null;
+    }
+
     public function isAuthenticated(): bool{
         return isset($_SESSION['user']);
     }

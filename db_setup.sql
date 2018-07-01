@@ -13,3 +13,17 @@ CREATE TABLE users(
     permission  enum('regular', 'admin', 'superadmin') not null
 );
 
+CREATE TABLE news(
+    id          int AUTO_INCREMENT primary key,
+    title       varchar(50) not null,
+    content     text not null,
+    date_time   datetime default current_timestamp,
+    created_by  int not null
+);
+
+ALTER TABLE news
+ADD CONSTRAINT connection_news_user
+FOREIGN KEY (created_by)
+REFERENCES users (id)
+ON DELETE CASCADE
+ON UPDATE RESTRICT;

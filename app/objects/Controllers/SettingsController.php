@@ -24,7 +24,7 @@ class SettingsController implements Controller{
             return new RedirectResponse('?controller=login');
         }
 
-        $user = $this->userRepository->findByUsername($this->session->getSessionProperty('user'));
+        $user = $this->userRepository->findById($this->session->getSessionProperty('user'));
 
         switch($request->method()){
             case 'POST':
@@ -92,7 +92,6 @@ class SettingsController implements Controller{
                     $user->changeLastName($lastName);
                     $user->changeUsername($username);
                     $this->userRepository->updateUser($user);
-                    $this->session->authenticate($user->username());
                     $messages[] = 'Podaci uspjesno promijenjeni!';
                 }
             }

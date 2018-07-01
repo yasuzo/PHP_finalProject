@@ -49,7 +49,8 @@ class RegisterController implements Controller{
                 }else{
                     $pass1 = password_hash($pass1, PASSWORD_BCRYPT);
                     $this->userRepository->persist(new User($firstName, $lastName, $username, $pass1));
-                    $this->session->setSessionProperty('user', $username);
+                    $user = $this->userRepository->findByUsername($username);
+                    $this->session->setSessionProperty('user', $user->id());
                     return new RedirectResponse('index.php');
                 }
             }catch(Exception $e){
