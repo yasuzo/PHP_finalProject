@@ -39,7 +39,7 @@ class IndexController implements Controller{
                 'authenticated' => $this->session->isAuthenticated(),
                 'body' => $this->templatingEngine->render('templates/index_template.php', [
                     'messages' => $messages ?? [],
-                    'isAdmin' => $this->firewall->hasAuthorizationLevel('admin'),
+                    'isAdmin' => $this->firewall->hasAuthorizationLevel('admin') || $this->firewall->hasAuthorizationLevel('superadmin'),
                     'news' => $this->newsRepository->findNews()
                 ])
             ]
@@ -49,8 +49,8 @@ class IndexController implements Controller{
     }
 
     private function handlePost(Request $request): Response{
-        if($this->firewall->hasAuthorizationLevel('admin') === false){
-            return new RedirectResponse('?controller=index');
+        if(($this->firewall->hasAuthorizationLevel('admin') || $this->firewall->hasAuthorizationLevel('superadmin')) === false){
+            return new RedirectResponse('?controller=404');
         }
 
         $post = $request->post();
@@ -64,7 +64,6 @@ class IndexController implements Controller{
             $messages[] = 'Polje naslova i sadrzaja ne smije biti prazno!';
         }else{
             $this->newsRepository->persist(new News($title, $content, $this->session->getLoggedUserId()));
-            return new RedirectResponse('index.php');
         }
 
         $content = $this->templatingEngine->render(
@@ -74,7 +73,7 @@ class IndexController implements Controller{
                 'authenticated' => $this->session->isAuthenticated(),
                 'body' => $this->templatingEngine->render('templates/index_template.php', [
                     'messages' => $messages ?? [],
-                    'isAdmin' => $this->firewall->hasAuthorizationLevel('admin'),
+                    'isAdmin' => $this->firewall->hasAuthorizationLevel('admin') || $this->firewall->hasAuthorizationLevel('superadmin'),
                     'news' => $this->newsRepository->findNews()
                 ])
             ]

@@ -17,7 +17,11 @@
 <h4>Zadnje objave</h4>
 <div class="container">
     <?php foreach($news as $val): ?>
-        <h6><?= safe($val['title']); ?></h6>
+        <h6><?= safe($val['title']); ?> 
+            <?php if($isAdmin): ?>
+                <small><a href="?controller=update-news&newsId=<?= $val['id'];?>">Uredi</a></small>
+            <?php endif; ?>
+        </h6>
         <sub>@ <?= safe($val['date_time']); ?> by <a href="#"><?= safe($val['username']); ?></a></sub>
         <hr>
         <p class="text-secondary"><?= safe($val['content']); ?></p><br>

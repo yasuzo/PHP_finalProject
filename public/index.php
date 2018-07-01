@@ -21,7 +21,8 @@ use Controllers\{
     SettingsController,
     IndexController,
     Error404Controller,
-    RegisterController
+    RegisterController,
+    UpdateNewsController
 };
 
 use Http\Responses\HTMLResponse;
@@ -64,6 +65,9 @@ switch($_GET['controller'] ?? 'index'){
         break;
     case 'index':
         $controller = new IndexController($templatingEngine, $session, $newsRepository, $firewall);
+        break;
+    case 'update-news':
+        $controller = new UpdateNewsController($templatingEngine, $session, $newsRepository, $firewall);
         break;
     default:
         http_response_code(404);
