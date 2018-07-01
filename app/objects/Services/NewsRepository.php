@@ -25,7 +25,7 @@ SQL;
 
     public function findNews(): array{
         $query = <<<SQL
-        select news.title, news.content, news.date_time, users.username
+        select news.title, news.content, DATE_FORMAT(news.date_time, "%d.%m.%Y %H:%i") date_time, users.username
         from news left join users on news.created_by=users.id
         order by news.date_time DESC;
 SQL;
