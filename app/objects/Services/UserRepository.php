@@ -41,6 +41,15 @@ SQL;
         return $user;
     }
 
+    public function findAll(): Array{
+        $query = <<<SQL
+        select id, firstName, lastName, username, pass, permission
+        from users
+SQL;
+        $query = $this->baza->query($query);
+        return $query->fetchAll() ?: [];
+    }
+
     public function persist(User $user): void{
         $query = <<<SQL
         insert into users
@@ -86,5 +95,31 @@ SQL;
                 ':id' => $user->id()
             ]
         );
+    }
+
+    public function updatePermission($id, string $permission): void{
+        $query = <<<SQL
+        update users
+        set permission=:permission
+        where id=:id;
+SQL;
+        $query = $this->baza->prepare($query);
+        $query->execute(
+            [
+                ':permission' => $permission,
+                ':id' => $id
+            ]
+        );
+    }
+
+    public function findAllButOne($id): array{
+        $query = <<<SQL
+        select id, firstName, lastName, username, pass, permission
+        from users
+        where id!=:id;
+SQL;
+        $query = $this->baza->prepare($query);
+        $query->execute([':id' => $id]);
+        return $query->fetchAll() ?: [];
     }
 }

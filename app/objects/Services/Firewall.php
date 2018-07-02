@@ -21,4 +21,20 @@ class Firewall{
         return $user->permission() === $level;
     }
 
+    public function isAuthorizationHigher(string $level, string $levelToCompareTo): bool{
+        if($level === 'regular' || ($level === $levelToCompareTo) || ($level === 'admin' && $levelToCompareTo === 'superadmin')){
+            return false;
+        }
+        return true;
+    }
+
+    public function getAuthorizationLevel(): string{
+        $user = $this->session->getSessionProperty('user');
+        if($user == null){
+            return false;
+        }
+        $user = $this->userRepository->findById($user);
+        return $user->permission();
+    }
+
 }

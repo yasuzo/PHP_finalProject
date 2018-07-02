@@ -64,11 +64,11 @@ switch($_GET['controller'] ?? 'index'){
         $controller = new ExcursionsController($templatingEngine, $session, $excursionRepository, $firewall, $normalizer);
         break;
     case 'members':
-        $controller = new MembersController($templatingEngine, $session);
+        $controller = new MembersController($templatingEngine, $session, $userRepository, $firewall);
         break;
-    case 'about':
-        $controller = new AboutController($templatingEngine, $session);
-        break;
+    // case 'about':
+    //     $controller = new AboutController($templatingEngine, $session, $userRepository, $firewall);
+    //     break;
     case 'profile':
         $controller = new ProfileController($templatingEngine, $session);
         break;
