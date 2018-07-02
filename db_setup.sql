@@ -27,3 +27,27 @@ FOREIGN KEY (created_by)
 REFERENCES users (id)
 ON DELETE CASCADE
 ON UPDATE RESTRICT;
+
+CREATE TABLE excursions(
+    id              int AUTO_INCREMENT primary key,
+    title           varchar(50) not null,
+    description     text not null,
+    startingPoint   varchar(50) not null,
+    destination     varchar(50) not null,
+    date_time       datetime not null,
+    price           int not null
+);
+
+create table userExcursions_going(
+    id              int AUTO_INCREMENT primary key,
+    user_id         int not null,
+    excursion_id    int not null,
+    FOREIGN key (user_id)
+        REFERENCES users (id)
+        ON DELETE CASCADE
+        ON UPDATE RESTRICT,
+    FOREIGN key (excursion_id)
+        REFERENCES excursions (id)
+        ON DELETE CASCADE
+        ON UPDATE RESTRICT
+);

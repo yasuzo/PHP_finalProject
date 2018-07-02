@@ -10,7 +10,15 @@ require_once ROOT.'/app/baza.php';
 require_once ROOT."/app/libraries/helper_functions.php";
 require_once ROOT."/app/libraries/validation_helpers.php";
 
-use Services\{Session, Templating, UserRepository, NewsRepository, Firewall};
+use Services\{
+    Session, 
+    Templating, 
+    UserRepository, 
+    NewsRepository, 
+    Firewall, 
+    ExcursionRepository, 
+    Normalizer
+};
 
 use Controllers\{
     LoginController,
@@ -22,14 +30,18 @@ use Controllers\{
     IndexController,
     Error404Controller,
     RegisterController,
-    UpdateNewsController
+    UpdateNewsController,
+    UpdateExcursionController
 };
 
 use Http\Responses\HTMLResponse;
 use Http\Request;
 
+
+$normalizer = new Normalizer();
 $userRepository = new UserRepository($db);
 $newsRepository = new NewsRepository($db);
+$excursionRepository = new ExcursionRepository($db);
 $templatingEngine = new Templating(ROOT.'/app/views/');
 $session = new Session();
 $firewall = new Firewall($session, $userRepository);
@@ -49,7 +61,7 @@ switch($_GET['controller'] ?? 'index'){
         $controller = new RegisterController($templatingEngine, $session, $userRepository);
         break;
     case 'excursions':
-        $controller = new ExcursionsController($templatingEngine, $session);
+        $controller = new ExcursionsController($templatingEngine, $session, $excursionRepository, $firewall, $normalizer);
         break;
     case 'members':
         $controller = new MembersController($templatingEngine, $session);
@@ -68,6 +80,9 @@ switch($_GET['controller'] ?? 'index'){
         break;
     case 'update-news':
         $controller = new UpdateNewsController($templatingEngine, $session, $newsRepository, $firewall);
+        break;
+    case 'update-excursion':
+        $controller = new UpdateExcursionController($templatingEngine, $session, $excursionRepository, $firewall, $normalizer);
         break;
     default:
         http_response_code(404);

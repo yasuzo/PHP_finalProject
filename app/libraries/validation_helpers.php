@@ -46,3 +46,13 @@ function username_taken(string $username, UserRepository $userRepository, array 
     }
     return false;
 }
+
+function valid_date_time(string $date_time): bool{
+    list($date, $time) = explode(' ', $date_time);
+    $date = DateTime::createFromFormat("Y-m-d", $date);
+    $convertedTime = DateTime::createFromFormat("H:i:s", $time);
+    if(($convertedTime !== false && !array_sum($convertedTime->getLastErrors())) === false){
+        $convertedTime = DateTime::createFromFormat("H:i", $time);
+    }
+    return $date !== false && !array_sum($date->getLastErrors()) && $convertedTime !== false && !array_sum($convertedTime->getLastErrors());
+}

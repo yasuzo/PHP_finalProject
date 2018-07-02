@@ -42,3 +42,18 @@ function set_empty_string(&...$arr): void{
         $val = '';
     }
 }
+
+function process_passed_parameters(&$errors, ...$arr): void{
+    if(passed_value_is_array(...$arr)){
+        $errors[] = 'Greska - Poslan je array';
+    }
+    if(is_empty(...$arr)){
+        $errors[] = 'Neka od polja su prazna!';
+    }
+}
+
+function is_string_number(string $string): bool{
+    return (bool)preg_match('/^\d+(?:.\d+)?$/', $string);
+}
+
+
