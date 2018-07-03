@@ -43,7 +43,7 @@ class MembersController implements Controller{
                     'messages' => $messages ?? [],
                     'isSuperAdmin' => $this->firewall->hasAuthorizationLevel('superadmin'),
                     'isAdmin' => $this->firewall->hasAuthorizationLevel('admin'),
-                    'users' => $this->userRepository->findAllButOne($this->session->getLoggedUserId())
+                    'users' => $this->userRepository->findAllButOne($this->session->getLoggedUserId() ?? '')
                 ])
             ]
         );

@@ -25,7 +25,7 @@ ALTER TABLE news
 ADD CONSTRAINT connection_news_user
 FOREIGN KEY (created_by)
 REFERENCES users (id)
-ON DELETE CASCADE
+ON DELETE SET null
 ON UPDATE RESTRICT;
 
 CREATE TABLE excursions(

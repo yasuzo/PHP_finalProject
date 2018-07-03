@@ -22,7 +22,7 @@
                 <small><a href="?controller=update-news&newsId=<?= $val['id'];?>">Uredi</a></small>
             <?php endif; ?>
         </h6>
-        <sub>@ <?= safe($val['date_time']); ?> by <a href="#"><?= safe($val['username']); ?></a></sub>
+        <sub>@ <?= safe($val['date_time']); ?> by <a href="#"><?= safe(($val['username'] ?? 'unknown')); ?></a></sub>
         <hr>
         <p class="text-secondary"><?= safe($val['content']); ?></p><br>
     <?php endforeach; ?>

@@ -53,7 +53,7 @@ function process_passed_parameters(&$errors, ...$arr): void{
 }
 
 function is_string_number(string $string): bool{
-    return (bool)preg_match('/^\d+(?:.\d+)?$/', $string);
+    return (bool)preg_match('/^\d+(?:\.\d+)?$/', $string);
 }
 
 
